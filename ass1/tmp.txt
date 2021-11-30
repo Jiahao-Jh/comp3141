@@ -1,0 +1,14 @@
+retrace :: Instructions -> Instructions
+retrace i = retrace' i toStartS 
+       where 
+              retrace' :: Instructions -> Instructions -> Instructions
+              retrace' Stop i        = i
+              retrace' (Move x xs) i = retrace' xs $ Move ((-) 0 x) i
+              retrace' (Turn x xs) i = retrace' xs $ Turn ((-) 0 x) i
+              retrace' (SetStyle x xs) i = retrace' xs $ SetStyle x i
+              retrace' (SetColour x xs) i = retrace' xs $ SetColour x i    
+              retrace' (PenDown xs) i = retrace' xs $ PenUp i
+              retrace' (PenUp xs) i = retrace' xs $ PenDown i 
+
+              toStartS :: Instructions 
+              toStartS = SetColour white $ SetStyle (Solid 1) $ PenDown $ Stop     
